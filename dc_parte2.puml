@@ -1,0 +1,43 @@
+@startuml
+class AlgoTek
+interface MetodoPago {
++ calcularPago(monto: Number): Number
+}
+
+class Efectivo {
++ calcularPago(monto: Number): Number
+}
+
+class Tarjeta {
+- nombreBanco
+- porcentajeDescuento
++ Tarjeta(banco: String)
++ calcularPago(monto: Number): Number
++ registrarConBanco(banco: String)
+}
+
+abstract Evento{}
+abstract Ubicaciones{}
+
+Exception EventoInexistenteError
+Exception MontoInvalidoError
+Exception NoHayLugaresDisponiblesError
+Exception TarifaDebeSerMayorACeroError
+Exception UbicacionInexistenteError
+Exception UbicacionesVaciaError
+Exception UbicacionNombreError
+
+AlgoTek -.> MetodoPago
+MetodoPago <|.. Efectivo
+MetodoPago <|.. Tarjeta
+MetodoPago .> MontoInvalidoError: instanciate
+Evento ..> UbicacionesVaciaError: instanciate
+Evento ..> UbicacionInexistenteError: instanciate
+Evento ..> TarifaDebeSerMayorACeroError: instanciate
+TarifaDebeSerMayorACeroError <.. Ubicaciones: instanciate
+Ubicaciones ..> NoHayLugaresDisponiblesError: instanciate
+Ubicaciones ..> UbicacionNombreError: instanciate
+AlgoTek .> EventoInexistenteError: instanciate
+
+
+@enduml

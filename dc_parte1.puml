@@ -1,0 +1,74 @@
+@startuml
+class AlgoTek{
++Algotek(evento: String, artistaNacional: String, tarifa: Int)
++Algotek(evento: String, artistaInternacional: String, tarifa: Int)
+-agregarEvento(evento:Evento)
+-buscarEvento(evento: String)
++costoEntradaParaEnUbicacionPagandoCon(evento: String, ubicacion: String, pagandoCon: MetodoPago): Number
++entradaMasBarataParaPagandoCon(evento: String, pagandoCon: MetodoPago): Number
++paraEventoRegistrarUbicacionCampoTarifa(evento: String, ubicacion: String, tarifa: Int)
++paraEventoRegistrarUbicacionPlateaPreferencialTarifa(evento: String, ubicacion: String, tarifa: Int)
++paraEventoRegistrarUbicacionViPTarifaLugaresDisponibles(evento: String, ubicacion: String, tarifa: Int, lugaresDisponibles: Int)
++registrarEventoDeArtistaInternacionalConTarifa(evento: String, artista: String, tarifa: Int)
++registrarEventoDeArtistaNacionalConTarifa(evento: String, artista: String, tarifa: Int)
+}
+abstract class Evento{
+-nombre: String
+-artista: String
+-tarifa: Int
+-buscarUbicacion(ubicacion: String)
+-agregarUbicacion(Ubicacion: Ubicacion)
+-{abstract}calcularCostoArtista()
++{abstract}calcularCostoEntradaEnUbicacion(ubicacion: String)
++{abstract}calcularCostoEntradaMasBarata()
++calcularCostoEntradaUbicacionMasBarata(): Number
++esIgual(nombreEvento: String): Boolean
++registrarDeArtistaConTarifaArtista(nombreEvento: String, artista: String, tarifa:Int)
++registrarUbicacionCampoConTarifa(nombreUbicacion: String, tarifa: Int)
++registrarUbicacionPlateaPreferencialConTarifa(nombreUbicacion: String, tarifa: Int)
++registrarUbicacionViPConTarifaLugaresDisponibles(nombreUbicacion: String, tarifa: Int, lugaresDisponibles: Int)
+}
+class EventoInternacional{
++EventoInternacional(nombreEvento: String, artista: String, tarifaArtista: Int)
++calcularCostoEntradaEnUbicacion(ubicacion: String): Number
++calcularCostoEntradaMasBarata(): Number
+-calcularCostoArtista(): Number
+}
+class EventoNacional{
++EventoInternacional(nombreEvento: String, artista: String, tarifaArtista: Int)
++calcularCostoEntradaEnUbicacion(ubicacion: String): Number
++calcularCostoEntradaMasBarata(): Number
+-calcularCostoArtista(): Number
+}
+
+abstract class Ubicacion{
+-nombre: String
+-tarifa: Int
++{abstract} calcularCosto()
++esIgual(nombreUbicacion: String): Boolean
++registrarConTarifa(nombre: String, tarifa: Int)
+}
+
+class UbicacionCampo {
++UbicacionCampo(nombre: String, tarifa: Int)
++calcularCosto(): Int
+}
+class UbicacionPlatea {
++UbicacionPlatea(nombre: String, tarifa: Int)
++calcularCosto(): Int
+}
+class UbicacionViP {
+-lugaresDisponibles: Int
++UbicacionViP(nombre: String, tarifa: Int, lugares: Int)
++calcularCosto(): Int
++registrarConTarifaLugaresDisponibles(nombre: String, tarifa: Int, lugares: Int)
+}
+
+AlgoTek "1" --> "1..*" Evento
+Ubicacion "0..*" <-- "1" Evento
+Evento <|-- EventoInternacional
+Evento <|-- EventoNacional
+UbicacionCampo --|> Ubicacion
+UbicacionPlatea --|> Ubicacion
+Ubicacion <|-- UbicacionViP
+@enduml

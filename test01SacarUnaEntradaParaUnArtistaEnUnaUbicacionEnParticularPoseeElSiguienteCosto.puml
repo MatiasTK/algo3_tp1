@@ -1,0 +1,51 @@
+@startuml
+
+title "test01SacarUnaEntradaParaUnArtistaEnUnaUbicacionEnParticularPoseeElSiguienteCosto"
+Actor ":TestCase"
+
+create "e:Efectivo"
+":TestCase" --> "e:Efectivo": <<create>>
+":TestCase" -> Algotek++: registrarEventoDeArtistaNacional("La ultima noche magica", "TB",50000)
+Algotek -> EventoNacional: registrar("La ultima noche magica", "TB",50000)
+EventoNacional --> Algotek: evento
+Algotek -> Algotek: agregarEvento(evento)
+Algotek --> ":TestCase"--: algotek
+
+":TestCase" -> Algotek++: registrarUbicacionPlatea("La ultima noche magica","D018,2000)
+Algotek -> Algotek++: buscarEvento("La ultima noche magica")
+loop "Para cada evento"
+    Algotek -> EventoNacional--: esIgual("La ultima noche magica")
+end
+Algotek -> EventoNacional--++: registrarUbicacionPlatea("D018", 2000)
+EventoNacional -> Ubicacion: registrar("D018",2000)
+Ubicacion --> EventoNacional: ubicacion2
+EventoNacional -> EventoNacional--: agregarUbicacion(ubicacion2)
+loop "Se registran 3 ubicaciones mas"
+":TestCase" -> Algotek++: registrarUbicacion("La ultima noche magica", nombre, tarifa)
+Algotek -> Algotek++: buscarEvento("La ultima noche magica")
+loop "Para cada evento"
+    Algotek -> EventoNacional--: esIgual("La ultima noche magica")
+end
+Algotek -> EventoNacional--++: registrarUbicacion(nombre, tarifa)
+EventoNacional -> Ubicacion: registrar(nombre, tarifa)
+Ubicacion --> EventoNacional: ubicacionX
+EventoNacional -> EventoNacional--: agregarUbicacion(ubicacionX)
+end
+":TestCase" -> Algotek++: costoEntradaEnUbicacionPagandoCon("La ultima noche magica", "D018", e)
+Algotek -> Algotek++: buscarEvento("La ultima noche magica")
+loop "Para cada evento"
+    Algotek -> EventoNacional--: esIgual("La ultima noche magica")
+end
+Algotek -> EventoNacional++: calcularCostoEnUbicacion("D018")
+EventoNacional -> EventoNacional++: buscarUbicacion("D018")
+loop "Para cada ubicacion"
+    EventoNacional -> Ubicacion--: esIgual("D018")
+end
+EventoNacional -> Ubicacion: calcularCosto
+Ubicacion --> EventoNacional: costoUbicacion = 36000
+EventoNacional -> EventoNacional: calcularCostoArtista() = 3.7
+EventoNacional --> Algotek--: "costoEvento = 3600 + 3.7"
+Algotek -> "e:Efectivo": calcularPago(costoEvento)
+"e:Efectivo" --> Algotek: precioFinal = 3604
+Algotek --> ":TestCase": precioFinal
+@enduml

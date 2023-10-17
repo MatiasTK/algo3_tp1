@@ -1,0 +1,17 @@
+| analysis alive testCases classesToMutate |
+testCases :=  { AlgotekTest. EfectivoTest. EventoInternacionalTest. EventoNacionalTest.EventoTest. TarjetaTest. UbicacionCampoTest. UbicacionPlateaTest. UbicacionTest. UbicacionViPTest  }.
+classesToMutate := { AlgoTek. Efectivo. Evento. EventoInternacional. EventoNacional. Tarjeta. Ubicacion. UbicacionCampo. UbicacionPlatea. UbicacionViP. EventoInexistenteError. MontoInvalidoError. NoHayLugaresDisponiblesError. TarifaDebeSerMayorACeroError. UbicacionInexistenteError. UbicacionesVaciaError}.
+
+analysis := MutationTestingAnalysis
+    testCasesFrom: testCases
+    mutating: classesToMutate
+    using: MutantOperator contents
+    with: AllTestsMethodsRunningMutantEvaluationStrategy new.
+
+analysis run.
+
+"To retrieve the alive mutations"
+alive := analysis generalResult aliveMutants.
+
+"To inspect the results"
+analysis generalResult inspect.

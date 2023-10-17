@@ -1,0 +1,47 @@
+@startuml
+title "test05LaEntradaMasBarataParaUnArtistaInternacionalPoseeElSiguienteCosto"
+Actor ":TestCase"
+
+create "e:Efectivo"
+":TestCase" --> "e:Efectivo": <<create>>
+":TestCase" -> Algotek++: registrarEventoDeArtistaInternacional("Eras tour", "Taylor",100000)
+Algotek -> EventoInternacional: registrar("Eras tour", "Taylor",100000)
+EventoInternacional --> Algotek: evento
+Algotek -> Algotek: agregarEvento(evento)
+Algotek --> ":TestCase"--: algotek
+":TestCase" -> Algotek++: registrarUbicacionCampo("Eras tour", "Campo trasero", 40000)
+Algotek -> Algotek++: buscarEvento("Eras tour")
+loop "Para cada evento"
+    Algotek -> EventoInternacional--: esIgual("Eras tour")
+end
+Algotek -> EventoInternacional--++: registrarUbicacionCampo("Campo trasero", 40000)
+EventoInternacional -> Ubicacion: registrar("Campo trasero", 40000)
+Ubicacion --> EventoInternacional: ubicacion1
+EventoInternacional -> EventoInternacional--: agregarUbicacion(ubicacion1)
+loop "Se registran 5 ubicaciones mas"
+":TestCase" -> Algotek++: registrarUbicacion("Eras tour", nombre, tarifa)
+Algotek -> Algotek++: buscarEvento("Eras tour")
+loop "Para cada evento"
+    Algotek -> EventoInternacional--: esIgual("Eras tour")
+end
+Algotek -> EventoInternacional--++: registrarUbicacion(nombre, tarifa)
+EventoInternacional -> Ubicacion: registrar(nombre, tarifa)
+Ubicacion --> EventoInternacional: ubicacionX
+EventoInternacional -> EventoInternacional--: agregarUbicacion(ubicacionX)
+end
+":TestCase" -> Algotek++: entradaMasBarataPagandoCon("Eras tour", e)
+Algotek -> Algotek++: buscarEvento("Eras tour")
+loop "Para cada evento"
+    Algotek -> EventoInternacional--: esIgual("Eras tour")
+end
+Algotek -> EventoInternacional++: calcularCostoEntradaMasBarata()
+EventoInternacional -> EventoInternacional++: calcularUbicacionMasBarata() = 40000
+loop "Para cada evento"
+    EventoInternacional -> Ubicacion--: calcularCostoUbicacion()
+end
+EventoInternacional -> EventoInternacional: calcularCostoArtista() = 41000
+EventoInternacional --> Algotek--: "costoEvento = 40000 + 41000"
+Algotek -> "e:Efectivo": calcularPago(costoEvento)
+"e:Efectivo" --> Algotek: precioFinal = 81000
+Algotek --> ":TestCase": precioFinal
+@enduml
